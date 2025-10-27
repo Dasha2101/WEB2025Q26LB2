@@ -120,11 +120,11 @@ class ToDo {
             deleteButton.addEventListener('click', () => {
                 this.deleteTask(task.id);
             });
-            
+
             taskContent.appendChild(taskTitle);
             taskContent.appendChild(taskDate);
             taskItem.appendChild(taskContent);
-
+            taskItem.appendChild(deleteButton);
             taskList.appendChild(taskItem);
         });
     }
