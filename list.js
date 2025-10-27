@@ -49,6 +49,11 @@ class ToDo {
         document.getElementById('addTaskBtn').addEventListener('click', () => {
             this.addTask();
         });
+            document.getElementById('taskInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.addTask();
+            }
+        });
     }
 
     //новая задача
@@ -75,6 +80,11 @@ class ToDo {
         //очищаем поле после ввода
         taskInput.value = '';
         taskInput.focus();
+    }
+
+        deleteTask(id) {
+        this.tasks = this.tasks.filter(task => task.id !== id);
+        this.renderTasks();
     }
 
     //отображение всех задач
@@ -104,6 +114,13 @@ class ToDo {
             const taskDate = document.createElement('div');
             taskDate.textContent = `Добавлено: ${task.createdAt}`;
 
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Удалить';
+            deleteButton.addEventListener('click', () => {
+                this.deleteTask(task.id);
+            });
+            
             taskContent.appendChild(taskTitle);
             taskContent.appendChild(taskDate);
             taskItem.appendChild(taskContent);
