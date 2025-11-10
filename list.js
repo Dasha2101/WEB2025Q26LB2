@@ -1,3 +1,4 @@
+
 class ToDo {
     constructor() {
         this.tasks = [];
@@ -134,3 +135,136 @@ class ToDo {
 document.addEventListener('DOMContentLoaded', () => {
     new ToDo();
 });
+
+//Все это - редактирование задачи
+    
+    //очищаем для начала
+    todo.startEditing = function(taskId) {
+        const taskItem = document.querySelector(`.task-item[data-id="${taskId}"]`);
+        if (!taskItem) return;
+
+        const taskTitle = taskItem.querySelector('.task-title');
+        const taskDate = taskItem.querySelector('.task-date');
+        const editForm = taskItem.querySelector('.edit-form');
+        const actionButtons = taskItem.querySelector('.action-buttons');
+
+        taskTitle.style.display = 'none';
+        taskDate.style.display = 'none';
+        actionButtons.style.display = 'none';
+        editForm.style.display = 'block';
+    };
+
+    //сохранить
+    todo.saveEdit = function(taskId) {
+        const taskItem = document.querySelector(`.task-item[data-id="${taskId}"]`);
+        if (!taskItem) return;
+
+        const editTitleInput = taskItem.querySelector('.edit-title-input');
+        const editDateInput = taskItem.querySelector('.edit-date-input');
+        
+        const newTitle = editTitleInput.value.trim();
+        const newDate = editDateInput.value;
+
+
+        const taskIndex = this.tasks.findIndex(task => task.id === taskId);
+        if (taskIndex !== -1) {
+            this.tasks[taskIndex].title = newTitle;
+            const date = new Date(newDate);
+            this.tasks[taskIndex].createdAt = date.toLocaleString('ru-RU');
+        }
+
+        this.renderTasks();
+    };
+
+    //другой
+    const DifferentRenderTasks = todo.renderTasks.bind(todo);
+    
+    //добавляем изменение задачи
+    todo.renderTasks = function() {
+        const taskList = document.getElementById('taskList');
+        taskList.innerHTML = '';
+
+        if (this.tasks.length === 0) {
+            const emptyMessage = document.createElement('li');
+            emptyMessage.textContent = 'Нет задач';
+            taskList.appendChild(emptyMessage);
+            return;
+        }
+
+        this.tasks.forEach(task => {
+            const taskItem = document.createElement('li');
+            taskItem.className = 'task-item';
+            taskItem.dataset.id = task.id;
+            
+            //стилизация
+            const taskContent = document.createElement('div');
+            taskContent.className = 'task-content';
+            
+            const taskTitle = document.createElement('div');
+            taskTitle.className = 'task-title';
+            taskTitle.textContent = task.title;
+
+            const taskDate = document.createElement('div');
+            taskDate.className = 'task-date';
+            taskDate.textContent = `Добавлено: ${task.createdAt}`;
+
+            //скрытая форма для редактирования
+            const editForm = document.createElement('div');
+            editForm.className = 'edit-form';
+            editForm.style.display = 'none';
+            
+            //поля для ввода
+            const editTitleInput = document.createElement('input');
+            editTitleInput.type = 'text';
+            editTitleInput.className = 'edit-title-input';
+            editTitleInput.value = task.title;
+            
+
+            const editDateInput = document.createElement('input');
+            editDateInput.type = 'datetime-local';
+            editDateInput.className = 'edit-date-input';
+            
+            //в формат даты
+            const date = new Date(task.createdAt.replace(/(\d+).(\d+).(\d+), (\d+):(\d+):(\d+)/, '$3-$2-$1T$4:$5:$6'));
+            editDateInput.value = date.toISOString().slice(0, 16);
+            
+
+            const editButtons = document.createElement('div');
+            editButtons.className = 'edit-buttons';
+            
+
+            const saveButton = document.createElement('button');
+            saveButton.className = 'save-btn';
+            saveButton.textContent = 'Сохранить';
+
+            editButtons.appendChild(saveButton);
+            editForm.appendChild(editTitleInput);
+            editForm.appendChild(editDateInput);
+            editForm.appendChild(editButtons);
+
+            const actionButtons = document.createElement('div');
+            actionButtons.className = 'action-buttons';
+            
+
+            const editButton = document.createElement('button');
+            editButton.className = 'edit-btn';
+            editButton.textContent = 'Редактировать';
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Удалить';
+            deleteButton.addEventListener('click', () => {
+                this.deleteTask(task.id);
+            });
+
+            actionButtons.appendChild(editButton);
+            actionButtons.appendChild(deleteButton);
+
+
+            taskContent.appendChild(taskTitle);
+            taskContent.appendChild(taskDate);
+            taskContent.appendChild(editForm);
+
+            taskItem.appendChild(taskContent);
+            taskItem.appendChild(actionButtons);
+            taskList.appendChild(taskItem);
+        });
