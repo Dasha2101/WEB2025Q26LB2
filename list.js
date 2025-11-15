@@ -1,4 +1,3 @@
-
 class ToDo {
     constructor() {
         this.tasks = [];
@@ -19,19 +18,17 @@ class ToDo {
         header.textContent = 'ToDo List';
         container.appendChild(header);
 
-
         const inputGroup = document.createElement('div');
 
         const taskInput = document.createElement('input');
         taskInput.type = 'text';
         taskInput.id = 'taskInput';
-        taskInput.placeholder = 'Новая задача...';
 
         const addButton = document.createElement('button');
         addButton.id = 'addTaskBtn';
         addButton.textContent = 'Добавить';
 
-        //собираем форму для добавления
+        // собираем форму для добавления
         inputGroup.appendChild(taskInput);
         inputGroup.appendChild(addButton);
         container.appendChild(inputGroup);
@@ -46,24 +43,25 @@ class ToDo {
     }
 
     setupEventListeners() {
-        //добавляем задачу по нажатию
+        // добавляем задачу по нажатию
         document.getElementById('addTaskBtn').addEventListener('click', () => {
             this.addTask();
         });
-            document.getElementById('taskInput').addEventListener('keypress', (e) => {
+        
+        document.getElementById('taskInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 this.addTask();
             }
         });
     }
 
-    //новая задача
+    // новая задача
     addTask() {
         const taskInput = document.getElementById('taskInput');
         const title = taskInput.value.trim();
 
         if (title === '') {
-            alert('Пожалуйста, введите название задачи');
+            alert('Пустое название задачи');
             return;
         }
 
@@ -75,71 +73,19 @@ class ToDo {
         };
 
         this.tasks.push(newTask);
-
         this.renderTasks();
 
-        //очищаем поле после ввода
+        // очищаем поле после ввода
         taskInput.value = '';
         taskInput.focus();
     }
 
-        deleteTask(id) {
+    deleteTask(id) {
         this.tasks = this.tasks.filter(task => task.id !== id);
         this.renderTasks();
     }
 
-    //отображение всех задач
-    renderTasks() {
-        const taskList = document.getElementById('taskList');
-        taskList.innerHTML = '';
-
-        if (this.tasks.length === 0) {
-            const emptyMessage = document.createElement('li');
-            emptyMessage.textContent = 'Нет задач';
-            taskList.appendChild(emptyMessage);
-            return;
-        }
-
-        //на каждое - элемент
-        this.tasks.forEach(task => {
-            const taskItem = document.createElement('li');
-            taskItem.className = 'task-item';
-            taskItem.dataset.id = task.id;
-            
-            //содержание задачи
-            const taskContent = document.createElement('div');
-            
-            const taskTitle = document.createElement('div');
-            taskTitle.textContent = task.title;
-
-            const taskDate = document.createElement('div');
-            taskDate.textContent = `Добавлено: ${task.createdAt}`;
-
-
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = 'Удалить';
-            deleteButton.addEventListener('click', () => {
-                this.deleteTask(task.id);
-            });
-
-            taskContent.appendChild(taskTitle);
-            taskContent.appendChild(taskDate);
-            taskItem.appendChild(taskContent);
-            taskItem.appendChild(deleteButton);
-            taskList.appendChild(taskItem);
-        });
-    }
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    new ToDo();
-});
-
-//Все это - редактирование задачи
-    
-    //очищаем для начала
-    todo.startEditing = function(taskId) {
+    startEditing(taskId) {
         const taskItem = document.querySelector(`.task-item[data-id="${taskId}"]`);
         if (!taskItem) return;
 
@@ -152,10 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
         taskDate.style.display = 'none';
         actionButtons.style.display = 'none';
         editForm.style.display = 'block';
-    };
+    }
 
-    //сохранить
-    todo.saveEdit = function(taskId) {
+    saveEdit(taskId) {
         const taskItem = document.querySelector(`.task-item[data-id="${taskId}"]`);
         if (!taskItem) return;
 
@@ -165,6 +110,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const newTitle = editTitleInput.value.trim();
         const newDate = editDateInput.value;
 
+        if (newTitle === '') {
+            alert('Пустое название задачи');
+            return;
+        }
 
         const taskIndex = this.tasks.findIndex(task => task.id === taskId);
         if (taskIndex !== -1) {
@@ -174,13 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         this.renderTasks();
-    };
+    }
 
-    //другой
-    const DifferentRenderTasks = todo.renderTasks.bind(todo);
-    
-    //добавляем изменение задачи
-    todo.renderTasks = function() {
+    // отображение всех задач
+    renderTasks() {
         const taskList = document.getElementById('taskList');
         taskList.innerHTML = '';
 
@@ -191,12 +137,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // на каждое - элемент
         this.tasks.forEach(task => {
             const taskItem = document.createElement('li');
             taskItem.className = 'task-item';
             taskItem.dataset.id = task.id;
             
-            //стилизация
+            // стилизация
             const taskContent = document.createElement('div');
             taskContent.className = 'task-content';
             
@@ -208,34 +155,34 @@ document.addEventListener('DOMContentLoaded', () => {
             taskDate.className = 'task-date';
             taskDate.textContent = `Добавлено: ${task.createdAt}`;
 
-            //скрытая форма для редактирования
+            // скрытая форма для редактирования
             const editForm = document.createElement('div');
             editForm.className = 'edit-form';
             editForm.style.display = 'none';
             
-            //поля для ввода
+            // поля для ввода
             const editTitleInput = document.createElement('input');
             editTitleInput.type = 'text';
             editTitleInput.className = 'edit-title-input';
             editTitleInput.value = task.title;
-            
 
             const editDateInput = document.createElement('input');
             editDateInput.type = 'datetime-local';
             editDateInput.className = 'edit-date-input';
             
-            //в формат даты
+            // в формат даты
             const date = new Date(task.createdAt.replace(/(\d+).(\d+).(\d+), (\d+):(\d+):(\d+)/, '$3-$2-$1T$4:$5:$6'));
             editDateInput.value = date.toISOString().slice(0, 16);
-            
 
             const editButtons = document.createElement('div');
             editButtons.className = 'edit-buttons';
-            
 
             const saveButton = document.createElement('button');
             saveButton.className = 'save-btn';
             saveButton.textContent = 'Сохранить';
+            saveButton.addEventListener('click', () => {
+                this.saveEdit(task.id);
+            });
 
             editButtons.appendChild(saveButton);
             editForm.appendChild(editTitleInput);
@@ -244,11 +191,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const actionButtons = document.createElement('div');
             actionButtons.className = 'action-buttons';
-            
 
             const editButton = document.createElement('button');
             editButton.className = 'edit-btn';
             editButton.textContent = 'Редактировать';
+            editButton.addEventListener('click', () => {
+                this.startEditing(task.id);
+            });
 
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'Удалить';
@@ -259,7 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
             actionButtons.appendChild(editButton);
             actionButtons.appendChild(deleteButton);
 
-
             taskContent.appendChild(taskTitle);
             taskContent.appendChild(taskDate);
             taskContent.appendChild(editForm);
@@ -268,3 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
             taskItem.appendChild(actionButtons);
             taskList.appendChild(taskItem);
         });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    new ToDo();
+});
