@@ -148,7 +148,7 @@ class ToDo {
         // на каждое - элемент
         this.tasks.forEach(task => {
             const taskItem = document.createElement('li');
-            taskItem.className = 'task-item ${task.completed ? 'task-completed' : ';
+            taskItem.className = `task-item ${task.completed ? 'task-completed' : ''}`;
             taskItem.dataset.id = task.id;
             
             // стилизация
