@@ -85,6 +85,14 @@ class ToDo {
         this.renderTasks();
     }
 
+    TaskCompletion(id) {
+            const taskIndex = this.tasks.findIndex(task => task.id === id);
+            if (taskIndex !== -1) {
+                this.tasks[taskIndex].completed = !this.tasks[taskIndex].completed;
+                this.renderTasks();
+            }
+        }
+
     startEditing(taskId) {
         const taskItem = document.querySelector(`.task-item[data-id="${taskId}"]`);
         if (!taskItem) return;
@@ -140,7 +148,7 @@ class ToDo {
         // на каждое - элемент
         this.tasks.forEach(task => {
             const taskItem = document.createElement('li');
-            taskItem.className = 'task-item';
+            taskItem.className = 'task-item ${task.completed ? 'task-completed' : ';
             taskItem.dataset.id = task.id;
             
             // стилизация
@@ -192,6 +200,15 @@ class ToDo {
             const actionButtons = document.createElement('div');
             actionButtons.className = 'action-buttons';
 
+            //изменяем статус задачи
+            const completeButton = document.createElement('button');
+            completeButton.className = `complete-btn ${task.completed ? 'cancel-btn' : ''}`;
+            completeButton.textContent = task.completed ? 'Отменить' : 'Выполнено';
+            completeButton.addEventListener('click', () => {
+                this.TaskCompletion(task.id);
+            });
+
+
             const editButton = document.createElement('button');
             editButton.className = 'edit-btn';
             editButton.textContent = 'Редактировать';
@@ -205,6 +222,7 @@ class ToDo {
                 this.deleteTask(task.id);
             });
 
+            actionButtons.appendChild(completeButton);
             actionButtons.appendChild(editButton);
             actionButtons.appendChild(deleteButton);
 
@@ -222,3 +240,4 @@ class ToDo {
 document.addEventListener('DOMContentLoaded', () => {
     new ToDo();
 });
+

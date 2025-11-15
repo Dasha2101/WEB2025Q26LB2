@@ -1,0 +1,26 @@
+.task-completed {
+    border-color: #4CAF50;
+    background-color: #f8fff8;
+}
+
+.task-completed .task-content {
+    color: #2e7d32;
+}
+
+.task-completed .task-title {
+    text-decoration: line-through;
+    opacity: 0.8;
+}
+
+.task-completed .task-date {
+    color: #4CAF50;
+    opacity: 0.7;
+}
+
+.cancel-btn {
+    background-color: #ff9800;
+}
+
+.cancel-btn:hover {
+    background-color: #f57c00;
+}
