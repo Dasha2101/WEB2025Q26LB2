@@ -33,6 +33,31 @@ class ToDo {
         inputGroup.appendChild(addButton);
         container.appendChild(inputGroup);
 
+
+        //кнопки сортировки
+        const sortGroup = document.createElement('div');
+        sortGroup.className = 'sort-group';
+
+        const sortByDateBtn = document.createElement('button');
+        sortByDateBtn.id = 'sortByDateBtn';
+        sortByDateBtn.textContent = 'Сортировать по дате';
+        sortByDateBtn.className = 'sort-btn';
+
+        const sortByStatusBtn = document.createElement('button');
+        sortByStatusBtn.id = 'sortByStatusBtn';
+        sortByStatusBtn.textContent = 'Сначала незавершенные';
+        sortByStatusBtn.className = 'sort-btn';
+
+        const resetSortBtn = document.createElement('button');
+        resetSortBtn.id = 'resetSortBtn';
+        resetSortBtn.textContent = 'Сбросить сортировку';
+        resetSortBtn.className = 'sort-btn';
+
+        sortGroup.appendChild(sortByDateBtn);
+        sortGroup.appendChild(sortByStatusBtn);
+        sortGroup.appendChild(resetSortBtn);
+        container.appendChild(sortGroup);
+
         const tasksContainer = document.createElement('div');
 
         const taskList = document.createElement('ul');
@@ -54,6 +79,67 @@ class ToDo {
             }
         });
     }
+    
+    sortTasksByDate() {
+        this.sortBy = 'date';
+        this.tasks.sort((a, b) => {
+            const dateA = new Date(a.createdAt.replace(/(\d+).(\d+).(\d+), (\d+):(\d+):(\d+)/, '$3-$2-$1T$4:$5:$6'));
+            const dateB = new Date(b.createdAt.replace(/(\d+).(\d+).(\d+), (\d+):(\d+):(\d+)/, '$3-$2-$1T$4:$5:$6'));
+            return dateB - dateA; // сначала новые
+        });
+        this.renderTasks();
+        this.updateSortButtons();
+    }
+
+    //сорт. по статусу
+    sortTasksByStatus() {
+        this.sortBy = 'status';
+        this.tasks.sort((a, b) => {
+            //сперва незавершенные
+            if (a.completed && !b.completed) return 1;
+            if (!a.completed && b.completed) return -1;
+            return 0;
+        });
+        this.renderTasks();
+        this.updateSortButtons();
+    }
+
+    //сброс сортировки
+    resetSort() {
+        this.sortBy = 'default';
+        // Восстанавливаем исходный порядок (по ID - чем больше ID, тем новее задача)
+        this.tasks.sort((a, b) => a.id - b.id);
+        this.renderTasks();
+        this.updateSortButtons();
+    }
+
+    //обновление состояний кнопок
+    updateSortButtons() {
+        const sortByDateBtn = document.getElementById('sortByDateBtn');
+        const sortByStatusBtn = document.getElementById('sortByStatusBtn');
+        const resetSortBtn = document.getElementById('resetSortBtn');
+
+        //сначвла сбрасываем
+        sortByDateBtn.classList.remove('active');
+        sortByStatusBtn.classList.remove('active');
+        resetSortBtn.classList.remove('active');
+
+        // текущее состояние
+        switch (this.sortBy) {
+            case 'date':
+                sortByDateBtn.classList.add('active');
+                sortByDateBtn.textContent = 'По дате';
+                break;
+            case 'status':
+                sortByStatusBtn.classList.add('active');
+                sortByStatusBtn.textContent = 'По статусу';
+                break;
+            default:
+                resetSortBtn.classList.add('active');
+                resetSortBtn.textContent = 'По умолчанию';
+        }
+    }
+
 
     // новая задача
     addTask() {
