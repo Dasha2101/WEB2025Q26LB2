@@ -91,7 +91,7 @@ class ToDo {
         document.getElementById('resetSortBtn').addEventListener('click', () => {
             this.resetSort();
         });
-    }
+    
 
 
 
@@ -124,7 +124,7 @@ class ToDo {
     //сброс сортировки
     resetSort() {
         this.sortBy = 'default';
-        // Восстанавливаем исходный порядок (по ID - чем больше ID, тем новее задача)
+        //восстанавливаем исходный порядок (чем больше id, тем новее задача)
         this.tasks.sort((a, b) => a.id - b.id);
         this.renderTasks();
         this.updateSortButtons();
@@ -337,8 +337,8 @@ class ToDo {
             taskItem.appendChild(actionButtons);
             taskList.appendChild(taskItem);
 
-            this.updateSortButtons();
         });
+            this.updateSortButtons();
     }
 }
 
