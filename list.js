@@ -1,6 +1,7 @@
 class ToDo {
     constructor() {
         this.tasks = [];
+        this.sortBy = 'default';
         this.init();
     }
 
@@ -78,6 +79,22 @@ class ToDo {
                 this.addTask();
             }
         });
+
+        document.getElementById('sortByDateBtn').addEventListener('click', () => {
+            this.sortTasksByDate();
+        });
+
+        document.getElementById('sortByStatusBtn').addEventListener('click', () => {
+            this.sortTasksByStatus();
+        });
+
+        document.getElementById('resetSortBtn').addEventListener('click', () => {
+            this.resetSort();
+        });
+    }
+
+
+
     }
     
     sortTasksByDate() {
@@ -319,6 +336,8 @@ class ToDo {
             taskItem.appendChild(taskContent);
             taskItem.appendChild(actionButtons);
             taskList.appendChild(taskItem);
+
+            this.updateSortButtons();
         });
     }
 }
