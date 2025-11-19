@@ -2,6 +2,7 @@ class ToDo {
     constructor() {
         this.tasks = [];
         this.sortBy = 'default';
+        this.filterBy = 'all';
         this.init();
     }
 
@@ -34,6 +35,47 @@ class ToDo {
         inputGroup.appendChild(addButton);
         container.appendChild(inputGroup);
 
+        //список фильтров
+                const filterToggleBtn = document.createElement('button');
+        filterToggleBtn.id = 'filterToggleBtn';
+        filterToggleBtn.textContent = 'Фильтры';
+        filterToggleBtn.className = 'filter-toggle-btn';
+        container.appendChild(filterToggleBtn);
+        
+        const filterDropdown = document.createElement('div');
+        filterDropdown.id = 'filterDropdown';
+        filterDropdown.className = 'filter-dropdown';
+
+        const filterTitle = document.createElement('div');
+        filterTitle.className = 'filter-title';
+        filterTitle.textContent = 'Фильтровать задачи:';
+
+        const filterAllBtn = document.createElement('button');
+        filterAllBtn.id = 'filterAllBtn';
+        filterAllBtn.textContent = 'Все задачи';
+        filterAllBtn.className = 'filter-btn active';
+
+        const filterActiveBtn = document.createElement('button');
+        filterActiveBtn.id = 'filterActiveBtn';
+        filterActiveBtn.textContent = 'Только активные';
+        filterActiveBtn.className = 'filter-btn';
+
+        const filterCompletedBtn = document.createElement('button');
+        filterCompletedBtn.id = 'filterCompletedBtn';
+        filterCompletedBtn.textContent = 'Только выполненные';
+        filterCompletedBtn.className = 'filter-btn';
+
+        const resetFilterBtn = document.createElement('button');
+        resetFilterBtn.id = 'resetFilterBtn';
+        resetFilterBtn.textContent = 'Сбросить фильтры';
+        resetFilterBtn.className = 'reset-filter-btn';
+
+        filterDropdown.appendChild(filterTitle);
+        filterDropdown.appendChild(filterAllBtn);
+        filterDropdown.appendChild(filterActiveBtn);
+        filterDropdown.appendChild(filterCompletedBtn);
+        filterDropdown.appendChild(resetFilterBtn);
+        container.appendChild(filterDropdown);
 
         //кнопки сортировки
         const sortGroup = document.createElement('div');
@@ -80,6 +122,7 @@ class ToDo {
             }
         });
 
+        //обработчики для сортировки
         document.getElementById('sortByDateBtn').addEventListener('click', () => {
             this.sortTasksByDate();
         });
@@ -91,12 +134,110 @@ class ToDo {
         document.getElementById('resetSortBtn').addEventListener('click', () => {
             this.resetSort();
         });
+
+        //обработчики для фильтрации
+
+        document.getElementById('filterToggleBtn').addEventListener('click', () => {
+            this.toggleFilterDropdown();
+        });
+
+        document.getElementById('filterAllBtn').addEventListener('click', () => {
+            this.filterTasks('all');
+        });
+
+        document.getElementById('filterActiveBtn').addEventListener('click', () => {
+            this.filterTasks('active');
+        });
+
+        document.getElementById('filterCompletedBtn').addEventListener('click', () => {
+            this.filterTasks('completed');
+        });
+
+        document.getElementById('resetFilterBtn').addEventListener('click', () => {
+            this.resetFilter();
+        });
     
 
 
 
     }
-    
+   
+    //выпадающий список
+    toggleFilterDropdown() {
+        const dropdown = document.getElementById('filterDropdown');
+        const toggleBtn = document.getElementById('filterToggleBtn');
+        
+        if (dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+            
+        } else {
+            dropdown.style.display = 'block';
+            
+        }
+    }
+
+    //фильтрация задач
+        filterTasks(filterType) {
+        this.filterBy = filterType;
+        this.renderTasks();
+        this.updateFilterButtons();
+        // Закрываем выпадающий список после выбора
+        document.getElementById('filterDropdown').style.display = 'none';
+        document.getElementById('filterToggleBtn').textContent = 'Фильтры';
+    }
+
+    filterTasks(filterType) {
+        this.filterBy = filterType;
+        this.renderTasks();
+        this.updateFilterButtons();
+        // Закрываем выпадающий список после выбора
+        document.getElementById('filterDropdown').style.display = 'none';
+        document.getElementById('filterToggleBtn').textContent = 'Фильтры';
+    }
+
+    resetFilter() {
+        this.filterBy = 'all';
+        this.renderTasks();
+        this.updateFilterButtons();
+        document.getElementById('filterDropdown').style.display = 'none';
+        document.getElementById('filterToggleBtn').textContent = 'Фильтры';
+    }
+
+    updateFilterButtons() {
+        const filterAllBtn = document.getElementById('filterAllBtn');
+        const filterActiveBtn = document.getElementById('filterActiveBtn');
+        const filterCompletedBtn = document.getElementById('filterCompletedBtn');
+
+        //сброс состояний
+        filterAllBtn.classList.remove('active');
+        filterActiveBtn.classList.remove('active');
+        filterCompletedBtn.classList.remove('active');
+
+        //какое сейчас состояние фильтра?
+        switch (this.filterBy) {
+            case 'all':
+                filterAllBtn.classList.add('active');
+                break;
+            case 'active':
+                filterActiveBtn.classList.add('active');
+                break;
+            case 'completed':
+                filterCompletedBtn.classList.add('active');
+                break;
+        }
+    }
+
+    getFilteredTasks() {
+        switch (this.filterBy) {
+            case 'active':
+                return this.tasks.filter(task => !task.completed);
+            case 'completed':
+                return this.tasks.filter(task => task.completed);
+            case 'all':
+            default:
+                return this.tasks;
+        }
+    }
     sortTasksByDate() {
         this.sortBy = 'date';
         this.tasks.sort((a, b) => {
