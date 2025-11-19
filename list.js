@@ -212,6 +212,7 @@ class ToDo {
         } else {
             clearSearchBtn.style.display = 'none';
         }
+    }
 
     // Получение задач с учетом поиска
     getSearchedTasks(tasks) {
@@ -222,9 +223,6 @@ class ToDo {
         return tasks.filter(task => 
             task.title.toLowerCase().includes(this.searchQuery)
         );
-    }
-
-
     }
    
     //выпадающий список
