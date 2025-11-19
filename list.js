@@ -418,7 +418,7 @@ class ToDo {
                 break;
             default:
                 filterText = 'Все задачи';
-        *}
+        }
         
         let sortText = '';
         switch (this.sortBy) {
