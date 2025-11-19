@@ -45,6 +45,7 @@ class ToDo {
         const filterDropdown = document.createElement('div');
         filterDropdown.id = 'filterDropdown';
         filterDropdown.className = 'filter-dropdown';
+        filterDropdown.style.display = 'none';
 
         const filterTitle = document.createElement('div');
         filterTitle.className = 'filter-title';
@@ -176,15 +177,6 @@ class ToDo {
         }
     }
 
-    //фильтрация задач
-        filterTasks(filterType) {
-        this.filterBy = filterType;
-        this.renderTasks();
-        this.updateFilterButtons();
-        // Закрываем выпадающий список после выбора
-        document.getElementById('filterDropdown').style.display = 'none';
-        document.getElementById('filterToggleBtn').textContent = 'Фильтры';
-    }
 
     filterTasks(filterType) {
         this.filterBy = filterType;
@@ -244,8 +236,8 @@ class ToDo {
         switch (this.sortBy) {
             case 'date':
                 return tasks.sort((a, b) => {
-                    const dateA = new Date(a.createdAt.replace(/(\d+).(\d+).(\d+), (\d+):(\d+):(\d+)/, '$3-$2-$1T$4:$5:$6'));**
-                    const dateB = new Date(b.createdAt.replace(/(\d+).(\d+).(\d+), (\d+):(\d+):(\d+)/, '$3-$2-$1T$4:$5:$6'));**
+                    const dateA = new Date(a.createdAt.replace(/(\d+).(\d+).(\d+), (\d+):(\d+):(\d+)/, '$3-$2-$1T$4:$5:$6'));
+                    const dateB = new Date(b.createdAt.replace(/(\d+).(\d+).(\d+), (\d+):(\d+):(\d+)/, '$3-$2-$1T$4:$5:$6'));
                     return dateB - dateA; // сначала новые
                 });
             case 'status':
@@ -269,12 +261,6 @@ class ToDo {
     //сорт. по статусу
     sortTasksByStatus() {
         this.sortBy = 'status';
-        this.tasks.sort((a, b) => {
-            //сперва незавершенные
-            if (a.completed && !b.completed) return 1;
-            if (!a.completed && b.completed) return -1;
-            return 0;
-        });
         this.renderTasks();
         this.updateSortButtons();
     }
