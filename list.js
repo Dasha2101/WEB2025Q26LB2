@@ -3,6 +3,7 @@ class ToDo {
         this.tasks = [];
         this.sortBy = 'default';
         this.filterBy = 'all';
+        this.searchQuery = '';
         this.init();
     }
 
@@ -20,6 +21,27 @@ class ToDo {
         header.textContent = 'ToDo List';
         container.appendChild(header);
 
+        //поиск по названию
+        const searchGroup = document.createElement('div');
+        searchGroup.className = 'search-group';
+
+        const searchInput = document.createElement('input');
+        searchInput.type = 'text';
+        searchInput.id = 'searchInput';
+        searchInput.placeholder = 'Поиск задачи...';
+        searchInput.className = 'search-input';
+
+        const clearSearchBtn = document.createElement('button');
+        clearSearchBtn.id = 'clearSearchBtn';
+        clearSearchBtn.textContent = '×';
+        clearSearchBtn.className = 'clear-search-btn';
+
+        searchGroup.appendChild(searchInput);
+        searchGroup.appendChild(clearSearchBtn);
+        container.appendChild(searchGroup);
+
+
+        //тут первичные элементы - добавляем новую задачу
         const inputGroup = document.createElement('div');
 
         const taskInput = document.createElement('input');
@@ -157,8 +179,41 @@ class ToDo {
         document.getElementById('resetFilterBtn').addEventListener('click', () => {
             this.resetFilter();
         });
-    
+    //методы для поиска
+    searchTasks(query) {
+        this.searchQuery = query.toLowerCase().trim();
+        this.renderTasks();
+        this.updateSearch();
+    }
 
+    clearSearch() {
+        this.searchQuery = '';
+        document.getElementById('searchInput').value = '';
+        this.renderTasks();
+        this.updateSearch();
+    }
+
+    updateSearch() {
+        const searchInput = document.getElementById('searchInput');
+        const clearSearchBtn = document.getElementById('clearSearchBtn');
+        
+        if (this.searchQuery) {
+            clearSearchBtn.style.display = 'block';
+        } else {
+            clearSearchBtn.style.display = 'none';
+        }
+    }
+
+    // Получение задач с учетом поиска
+    getSearchedTasks(tasks) {
+        if (!this.searchQuery) {
+            return tasks;
+        }
+        
+        return tasks.filter(task => 
+            task.title.toLowerCase().includes(this.searchQuery)
+        );
+    }
 
 
     }
@@ -527,6 +582,7 @@ class ToDo {
         });
             this.updateFilterButtons();
             this.updateSortButtons();
+            this.updateSearchUI();
     }
 }
 
