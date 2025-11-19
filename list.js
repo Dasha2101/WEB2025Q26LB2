@@ -238,13 +238,30 @@ class ToDo {
                 return this.tasks;
         }
     }
+
+    //по новому сортируем тк теперь еще учитываем фильтры
+    applySorting(tasks) {
+        switch (this.sortBy) {
+            case 'date':
+                return tasks.sort((a, b) => {
+                    const dateA = new Date(a.createdAt.replace(/(\d+).(\d+).(\d+), (\d+):(\d+):(\d+)/, '$3-$2-$1T$4:$5:$6'));**
+                    const dateB = new Date(b.createdAt.replace(/(\d+).(\d+).(\d+), (\d+):(\d+):(\d+)/, '$3-$2-$1T$4:$5:$6'));**
+                    return dateB - dateA; // сначала новые
+                });
+            case 'status':
+                return tasks.sort((a, b) => {
+                    if (a.completed && !b.completed) return 1;
+                    if (!a.completed && b.completed) return -1;
+                    return 0;
+                });
+            default:
+                return tasks.sort((a, b) => a.id - b.id);
+        }
+    }
+
+
     sortTasksByDate() {
         this.sortBy = 'date';
-        this.tasks.sort((a, b) => {
-            const dateA = new Date(a.createdAt.replace(/(\d+).(\d+).(\d+), (\d+):(\d+):(\d+)/, '$3-$2-$1T$4:$5:$6'));
-            const dateB = new Date(b.createdAt.replace(/(\d+).(\d+).(\d+), (\d+):(\d+):(\d+)/, '$3-$2-$1T$4:$5:$6'));
-            return dateB - dateA; // сначала новые
-        });
         this.renderTasks();
         this.updateSortButtons();
     }
@@ -265,8 +282,6 @@ class ToDo {
     //сброс сортировки
     resetSort() {
         this.sortBy = 'default';
-        //восстанавливаем исходный порядок (чем больше id, тем новее задача)
-        this.tasks.sort((a, b) => a.id - b.id);
         this.renderTasks();
         this.updateSortButtons();
     }
@@ -379,15 +394,63 @@ class ToDo {
         const taskList = document.getElementById('taskList');
         taskList.innerHTML = '';
 
-        if (this.tasks.length === 0) {
+        let tasksToRender = this.getFilteredTasks();
+
+        //применяем сортировку
+        tasksToRender = this.applySorting([...tasksToRender]);
+        // если нет задач
+        if (tasksToRender.length === 0) {
             const emptyMessage = document.createElement('li');
-            emptyMessage.textContent = 'Нет задач';
+            switch (this.filterBy) {
+                case 'active':
+                    emptyMessage.textContent = 'Нет активных задач';
+                    break;
+                case 'completed':
+                    emptyMessage.textContent = 'Нет выполненных задач';
+                    break;
+                default:
+                    emptyMessage.textContent = 'Нет задач';
+            }
             taskList.appendChild(emptyMessage);
+            this.updateFilterButtons();
+            this.updateSortButtons();
             return;
         }
+        
+
+        //индикатор фильтров и сортировки
+        const infoIndicator = document.createElement('div');
+        infoIndicator.className = 'info-indicator';
+        
+        let filterText = '';
+        switch (this.filterBy) {
+            case 'active':
+                filterText = 'Активные задачи';
+                break;
+            case 'completed':
+                filterText = 'Выполненные задачи';
+                break;
+            default:
+                filterText = 'Все задачи';
+        *}
+        
+        let sortText = '';
+        switch (this.sortBy) {
+            case 'date':
+                sortText = ' (отсортировано по дате)';
+                break;
+            case 'status':
+                sortText = ' (отсортировано по статусу)';
+                break;
+            default:
+                sortText = '';
+        }
+
+        infoIndicator.textContent = `${filterText}${sortText}`;
+        taskList.appendChild(infoIndicator);
 
         // на каждое - элемент
-        this.tasks.forEach(task => {
+        tasksToRender.forEach(task => {
             const taskItem = document.createElement('li');
             taskItem.className = `task-item ${task.completed ? 'task-completed' : ''}`;
             taskItem.dataset.id = task.id;
@@ -476,6 +539,7 @@ class ToDo {
             taskList.appendChild(taskItem);
 
         });
+            this.updateFilterButtons();
             this.updateSortButtons();
     }
 }

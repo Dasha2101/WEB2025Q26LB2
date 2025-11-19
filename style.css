@@ -24,3 +24,53 @@
 .cancel-btn:hover {
     background-color: #f57c00;
 }
+
+//все для фильтров
+.filter-toggle-btn {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+.filter-dropdown {
+    display: none;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+.filter-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.filter-btn {
+    display: block;
+    width: 100%;
+    padding: 6px 10px;
+    margin: 3px 0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    text-align: left;
+}
+
+.filter-btn.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.reset-filter-btn {
+    display: block;
+    width: 100%;
+    padding: 6px 10px;
+    margin: 8px 0 0 0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.info-indicator {
+    padding: 6px 10px;
+    margin-bottom: 8px;
+    border-left: 3px solid #007bff;
+}
