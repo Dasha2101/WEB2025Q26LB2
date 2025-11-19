@@ -145,15 +145,12 @@ class ToDo {
         switch (this.sortBy) {
             case 'date':
                 sortByDateBtn.classList.add('active');
-                sortByDateBtn.textContent = 'По дате';
                 break;
             case 'status':
                 sortByStatusBtn.classList.add('active');
-                sortByStatusBtn.textContent = 'По статусу';
                 break;
             default:
                 resetSortBtn.classList.add('active');
-                resetSortBtn.textContent = 'По умолчанию';
         }
     }
 
