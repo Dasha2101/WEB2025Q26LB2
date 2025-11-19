@@ -144,7 +144,15 @@ class ToDo {
                 this.addTask();
             }
         });
+        //обработчики для поиска
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            this.searchTasks(e.target.value);
+        });
 
+        document.getElementById('clearSearchBtn').addEventListener('click', () => {
+            this.clearSearch();
+        });
+        
         //обработчики для сортировки
         document.getElementById('sortByDateBtn').addEventListener('click', () => {
             this.sortTasksByDate();
@@ -179,6 +187,8 @@ class ToDo {
         document.getElementById('resetFilterBtn').addEventListener('click', () => {
             this.resetFilter();
         });
+    }
+
     //методы для поиска
     searchTasks(query) {
         this.searchQuery = query.toLowerCase().trim();
@@ -202,7 +212,6 @@ class ToDo {
         } else {
             clearSearchBtn.style.display = 'none';
         }
-    }
 
     // Получение задач с учетом поиска
     getSearchedTasks(tasks) {
@@ -436,6 +445,8 @@ class ToDo {
         taskList.innerHTML = '';
 
         let tasksToRender = this.getFilteredTasks();
+        //применить поиск сюда
+        tasksToRender = this.getSearchedTasks(tasksToRender);
 
         //применяем сортировку
         tasksToRender = this.applySorting([...tasksToRender]);
@@ -490,6 +501,15 @@ class ToDo {
         infoIndicator.textContent = `${filterText}${sortText}`;
         taskList.appendChild(infoIndicator);
 
+        //информацию из поиска в инфоиндикатор - по нему ищем
+        let searchText = '';
+        if (this.searchQuery) {
+            searchText = ` по запросу "${this.searchQuery}"`;
+        }
+
+        infoIndicator.textContent = `${filterText}${searchText}${sortText}`;
+        taskList.appendChild(infoIndicator);
+        
         // на каждое - элемент
         tasksToRender.forEach(task => {
             const taskItem = document.createElement('li');
@@ -582,7 +602,7 @@ class ToDo {
         });
             this.updateFilterButtons();
             this.updateSortButtons();
-            this.updateSearchUI();
+            this.updateSearch();
     }
 }
 
