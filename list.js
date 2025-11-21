@@ -8,10 +8,38 @@ class ToDo {
     }
 
     init() {
+        this.loadTasksFromStorage();
         this.createStructure();
         this.setupEventListeners();
         this.renderTasks();
     }
+
+    //загружаем и сохраняем задачи в local storage
+    loadTasksFromStorage() {
+        const savedTasks = localStorage.getItem('todoTasks');
+        if (savedTasks) {
+            try {
+                this.tasks = JSON.parse(savedTasks);
+                //даты в формате строки надо преобразовать в date!
+                this.tasks.forEach(task => {
+                    if (typeof task.createdAt === 'string') {
+                    }
+                });
+            } catch (error) {
+                console.error('Ошибка при загрузке задач:', error);
+                this.tasks = [];
+            }
+        }
+    }
+
+    saveTasksToStorage() {
+        try {
+            localStorage.setItem('todoTasks', JSON.stringify(this.tasks));
+        } catch (error) {
+            console.error('Ошибка при сохранении задач:', error);//если будут ошибки надо понять какие...
+        }
+    }
+
 
     createStructure() {
         const container = document.createElement('div');
@@ -377,6 +405,7 @@ class ToDo {
         };
 
         this.tasks.push(newTask);
+        this.saveTasksToStorage();
         this.renderTasks();
 
         // очищаем поле после ввода
@@ -386,6 +415,7 @@ class ToDo {
 
     deleteTask(id) {
         this.tasks = this.tasks.filter(task => task.id !== id);
+        this.saveTasksToStorage();
         this.renderTasks();
     }
 
@@ -393,6 +423,7 @@ class ToDo {
             const taskIndex = this.tasks.findIndex(task => task.id === id);
             if (taskIndex !== -1) {
                 this.tasks[taskIndex].completed = !this.tasks[taskIndex].completed;
+                this.saveTasksToStorage();
                 this.renderTasks();
             }
         }
@@ -432,6 +463,7 @@ class ToDo {
             this.tasks[taskIndex].title = newTitle;
             const date = new Date(newDate);
             this.tasks[taskIndex].createdAt = date.toLocaleString('ru-RU');
+            this.saveTasksToStorage();
         }
 
         this.renderTasks();
