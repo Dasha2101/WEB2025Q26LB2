@@ -155,11 +155,9 @@ class ToDo {
         container.appendChild(sortGroup);
 
         const tasksContainer = document.createElement('div');
-        tasksContainer.className = 'tasks-container';
 
         const taskList = document.createElement('ul');
         taskList.id = 'taskList';
-        taskList.className = 'task-list';
 
         tasksContainer.appendChild(taskList);
         container.appendChild(tasksContainer);
@@ -219,7 +217,7 @@ class ToDo {
         document.getElementById('resetFilterBtn').addEventListener('click', () => {
             this.resetFilter();
         });
-    
+    }
 
     //Методы для drag and drop
     handleDragStart(e) {
