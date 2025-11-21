@@ -4,6 +4,7 @@ class ToDo {
         this.sortBy = 'default';
         this.filterBy = 'all';
         this.searchQuery = '';
+        this.draggedItem = null;
         this.init();
     }
 
@@ -56,7 +57,7 @@ class ToDo {
         const searchInput = document.createElement('input');
         searchInput.type = 'text';
         searchInput.id = 'searchInput';
-        searchInput.placeholder = 'Поиск задачи...';
+        searchInput.placeholder = 'Поиск задачи';
         searchInput.className = 'search-input';
 
         const clearSearchBtn = document.createElement('button');
@@ -75,6 +76,7 @@ class ToDo {
         const taskInput = document.createElement('input');
         taskInput.type = 'text';
         taskInput.id = 'taskInput';
+        taskInput.placeholder = 'Новая задача';
 
         const addButton = document.createElement('button');
         addButton.id = 'addTaskBtn';
@@ -216,6 +218,71 @@ class ToDo {
             this.resetFilter();
         });
     }
+
+    //Методы для drag and drop
+    handleDragStart(e) {
+        this.draggedItem = e.target;
+        e.target.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        
+        //нужно установить данные, которые будем переносить
+        const taskId = parseInt(e.target.dataset.id);
+        e.dataTransfer.setData('text/plain', taskId.toString());
+    }
+
+    //перетаскивание над элементом
+    handleDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';   
+        const afterElement = this.getDragAfterElement(e.clientY);
+        const taskList = document.getElementById('taskList');
+        
+        if (afterElement == null) {
+            taskList.appendChild(this.draggedItem);
+        } else {
+            taskList.insertBefore(this.draggedItem, afterElement);
+        }
+    }
+
+    //ищем позицию для вставки
+    getDragAfterElement(y) {
+        const draggableElements = [...document.querySelectorAll('.task-item:not(.dragging)')];
+        
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+            
+            if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+            } else {
+                return closest;
+            }
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    handleDragEnd(e) {
+        e.target.classList.remove('dragging');
+        
+        this.updateTaskOrder();
+        this.saveTasksToStorage();
+    }
+
+    updateTaskOrder() {
+        const taskItems = document.querySelectorAll('.task-item');
+        const newOrder = [];
+        
+        taskItems.forEach(item => {
+            const taskId = parseInt(item.dataset.id);
+            const task = this.tasks.find(t => t.id === taskId);
+            if (task) {
+                newOrder.push(task);
+            }
+        });
+        
+        this.tasks = newOrder;
+    }
+
+
 
     //методы для поиска
     searchTasks(query) {
@@ -545,7 +612,11 @@ class ToDo {
             const taskItem = document.createElement('li');
             taskItem.className = `task-item ${task.completed ? 'task-completed' : ''}`;
             taskItem.dataset.id = task.id;
-            
+            //атрибуты для drag and drop
+            taskItem.draggable = true;
+            taskItem.addEventListener('dragstart', (e) => this.handleDragStart(e));
+            taskItem.addEventListener('dragend', (e) => this.handleDragEnd(e));
+
             // стилизация
             const taskContent = document.createElement('div');
             taskContent.className = 'task-content';
@@ -630,6 +701,10 @@ class ToDo {
             taskList.appendChild(taskItem);
 
         });
+
+            //это обработчик для контейнера, где хранится список
+            taskList.addEventListener('dragover', (e) => this.handleDragOver(e));
+
             this.updateFilterButtons();
             this.updateSortButtons();
             this.updateSearch();
