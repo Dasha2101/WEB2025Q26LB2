@@ -1,3 +1,12 @@
+.todo-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+}
+
+
+
 .task-completed {
     border-color: #4CAF50;
     background-color: #f8fff8;
@@ -26,6 +35,24 @@
 }
 
 //все для фильтров
+
+
+//для кнопок управления
+.controls-container {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin: 15px 0;
+    position: relative;
+}
+
+//контейнер с фильтрами. relative position значит относительно 
+.filter-container {
+    position: relative;//создает контекст позиционирования для dropdown
+    display: inline-block;
+}
+
+//
 .filter-toggle-btn {
     padding: 8px 16px;
     border: 1px solid #ccc;
@@ -35,9 +62,15 @@
 
 .filter-dropdown {
     display: none;
+    position: absolute;//относительно filter-container
+    top: 100%;
+    left: 0;
     border: 1px solid #ccc;
+    border-radius: 4px;
     padding: 10px;
-    margin: 5px 0;
+    z-index: 1000; //z вертикальная координата - знаичт контейнер выше всего на странице
+    min-width: 200px;
+    margin-top: 5px;
 }
 
 .filter-title {

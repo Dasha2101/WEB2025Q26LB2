@@ -44,6 +44,7 @@ class ToDo {
 
     createStructure() {
         const container = document.createElement('div');
+        container.className = 'todo-container';//будем вынимать список в отдельный контейнер
         document.body.appendChild(container);
 
         const header = document.createElement('h1');
@@ -87,8 +88,13 @@ class ToDo {
         inputGroup.appendChild(addButton);
         container.appendChild(inputGroup);
 
+        //кнопка фильтров с отдельным контейнером 
+        const filterContainer = document.createElement('div');
+        filterContainer.className = 'filter-container';
+        
+
         //список фильтров
-                const filterToggleBtn = document.createElement('button');
+        const filterToggleBtn = document.createElement('button');
         filterToggleBtn.id = 'filterToggleBtn';
         filterToggleBtn.textContent = 'Фильтры';
         filterToggleBtn.className = 'filter-toggle-btn';
@@ -129,6 +135,12 @@ class ToDo {
         filterDropdown.appendChild(filterCompletedBtn);
         filterDropdown.appendChild(resetFilterBtn);
         container.appendChild(filterDropdown);
+
+        //чтобы все было в отдельном контейнере.
+        filterContainer.appendChild(filterToggleBtn);
+        filterContainer.appendChild(filterDropdown);
+        controlsContainer.appendChild(filterContainer);
+
 
         //кнопки сортировки
         const sortGroup = document.createElement('div');
@@ -218,6 +230,22 @@ class ToDo {
             this.resetFilter();
         });
     }
+
+
+        //контейнер с фильтрами закрывается, если кликнуть снаружи
+        document.addEventListener('click', (e) => {
+            const filterContainer = document.querySelector('.filter-container');
+            const filterDropdown = document.getElementById('filterDropdown');
+            const filterToggleBtn = document.getElementById('filterToggleBtn');
+            
+            if (filterDropdown.style.display === 'block' && 
+                !filterContainer.contains(e.target) && 
+                e.target !== filterToggleBtn) {
+                filterDropdown.style.display = 'none';
+            }
+        });
+    }
+
 
     //Методы для drag and drop
     handleDragStart(e) {
