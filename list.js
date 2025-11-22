@@ -61,6 +61,12 @@ class ToDo {
         searchInput.placeholder = 'Поиск задачи';
         searchInput.className = 'search-input';
 
+        const clearSearchBtn = document.createElement('button');
+        clearSearchBtn.id = 'clearSearchBtn';
+        clearSearchBtn.textContent = '×';
+        clearSearchBtn.className = 'clear-search-btn';
+        clearSearchBtn.style.display = 'none';//пока прячем
+
         searchGroup.appendChild(searchInput);
         searchGroup.appendChild(clearSearchBtn);
         container.appendChild(searchGroup);
