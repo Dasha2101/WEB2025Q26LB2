@@ -48,7 +48,7 @@ class ToDo {
         document.body.appendChild(container);
 
         const header = document.createElement('h1');
-        header.textContent = 'Список дел';
+        header.textContent = 'ToDo List';
         container.appendChild(header);
 
         //поиск по названию
