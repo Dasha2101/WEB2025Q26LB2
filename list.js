@@ -44,6 +44,7 @@ class ToDo {
 
     createStructure() {
         const container = document.createElement('div');
+        container.className = 'todo-container'; 
         document.body.appendChild(container);
 
         const header = document.createElement('h1');
@@ -72,6 +73,7 @@ class ToDo {
 
         //тут первичные элементы - добавляем новую задачу
         const inputGroup = document.createElement('div');
+        inputGroup.className = 'input-group';
 
         const taskInput = document.createElement('input');
         taskInput.type = 'text';
@@ -87,12 +89,18 @@ class ToDo {
         inputGroup.appendChild(addButton);
         container.appendChild(inputGroup);
 
+
+    //панель управления задачи
+    const controlPanel = document.createElement('div');
+    controlPanel.className = 'control-panel';
+
+        
         //список фильтров
-                const filterToggleBtn = document.createElement('button');
+        const filterToggleBtn = document.createElement('button');
         filterToggleBtn.id = 'filterToggleBtn';
         filterToggleBtn.textContent = 'Фильтры';
         filterToggleBtn.className = 'filter-toggle-btn';
-        container.appendChild(filterToggleBtn);
+        controlPanel.appendChild(filterToggleBtn);//
         
         const filterDropdown = document.createElement('div');
         filterDropdown.id = 'filterDropdown';
@@ -128,7 +136,7 @@ class ToDo {
         filterDropdown.appendChild(filterActiveBtn);
         filterDropdown.appendChild(filterCompletedBtn);
         filterDropdown.appendChild(resetFilterBtn);
-        container.appendChild(filterDropdown);
+        controlPanel.appendChild(filterDropdown);//
 
         //кнопки сортировки
         const sortGroup = document.createElement('div');
@@ -152,9 +160,12 @@ class ToDo {
         sortGroup.appendChild(sortByDateBtn);
         sortGroup.appendChild(sortByStatusBtn);
         sortGroup.appendChild(resetSortBtn);
-        container.appendChild(sortGroup);
+        controlPanel.appendChild(sortGroup);//
+    
+        container.appendChild(controlPanel);//
 
         const tasksContainer = document.createElement('div');
+        tasksContainer.className = 'tasks-container';
 
         const taskList = document.createElement('ul');
         taskList.id = 'taskList';
