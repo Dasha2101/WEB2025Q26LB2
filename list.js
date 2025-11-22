@@ -130,7 +130,7 @@ class ToDo {
         const resetFilterBtn = document.createElement('button');
         resetFilterBtn.id = 'resetFilterBtn';
         resetFilterBtn.textContent = 'Сбросить фильтры';
-        resetFilterBtn.className = 'reset-filter-btn';
+        resetFilterBtn.className = 'filter-btn';
 
         filterDropdown.appendChild(filterTitle);
         filterDropdown.appendChild(filterAllBtn);
