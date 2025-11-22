@@ -13,7 +13,7 @@ body {
     min-height: 100vh;
 }
 
-//основной контейнер
+/* Основной контейнер */
 .todo-container {
     max-width: 800px;
     margin: 0 auto;
@@ -23,7 +23,7 @@ body {
     padding: 20px;
 }
 
-//сам заголовок
+/* Сам заголовок */
 .todo-header {
     text-align: center;
     color: #2c3e50;
@@ -31,7 +31,7 @@ body {
     margin-bottom: 20px;
 }
 
-//заголовок адаптируется
+/* Заголовок адаптируется */
 @media (max-width: 480px) {
     .todo-header {
         font-size: 24px;
@@ -41,7 +41,7 @@ body {
 
 
 
-//группа ввода задачи
+/* Группа ввода задачи */
 .input-group {
     display: flex;
     gap: 10px;
@@ -68,7 +68,7 @@ body {
 }
 
 
-//адапотивность для мобильного телефона
+/* Адаптивность для мобильного телефона */
 @media (max-width: 480px) {
     .input-group {
         flex-direction: column;
@@ -81,7 +81,7 @@ body {
 
 
 
-//панель управления
+/* Панель управления */
 .control-panel {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -98,7 +98,7 @@ body {
 
 
 
-//пока старое отмечание завершенных задач
+/* Пока старое отмечание завершенных задач */
 .task-completed {
     border-color: #4CAF50;
     background-color: #f8fff8;
@@ -126,7 +126,7 @@ body {
     background-color: #f57c00;
 }
 
-//все для фильтров
+/* Все для фильтров */
 .filter-toggle-btn {
     padding: 10px 15px;
     border: 1px solid #ccc;
@@ -186,7 +186,7 @@ body {
     text-align: center;
 }
 
-//поиск по названию
+/* Поиск по названию */
 .search-group {
     position: relative;
     margin: 15px 0;
@@ -201,7 +201,7 @@ body {
     font-size: 16px;
 }
 
-//
+
 .search-input:focus {
     outline: none;
     border-color: #007bff;
@@ -210,7 +210,7 @@ body {
 
 
 
-//все для сортировки
+/* Все для сортировки */
 .sort-group {
     display: grid;
     grid-template-columns: 1fr 1fr auto;
@@ -232,8 +232,7 @@ body {
     cursor: pointer;
     font-size: 16px;
     white-space: nowrap;
-    text-align: center;
-    box-sizing: border-box; 
+    text-align: center
 }
 
 .sort-btn.active {
@@ -241,7 +240,7 @@ body {
 }
 
 
-//контейнер с задачами
+/* Контейнер с задачами */
 .tasks-container {
     margin-top: 20px;
 }
@@ -250,7 +249,7 @@ body {
     list-style: none;
 }
 
-//одна задача
+/* Одна задача */
 .task-item {
     background: white;
     border: 1px solid #ddd;
@@ -279,7 +278,7 @@ body {
     background-color: #f8fff8;
 }
 
-//контент задачи
+/* Контент задачи */
 .task-content {
     display: flex;
     flex-direction: column;
@@ -308,7 +307,7 @@ body {
     color: #4CAF50;
 }
 
-//редактирование
+/* Редактирование */
 .edit-form {
     display: none;
     flex-direction: column;
@@ -338,7 +337,7 @@ body {
     font-size: 12px;
 }
 
-//кнопки действий с задачей
+/* Кнопки действий с задачей */
 .action-buttons {
     display: flex;
     gap: 6px;
