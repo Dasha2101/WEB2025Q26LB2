@@ -135,6 +135,7 @@ body {
     cursor: pointer;
     font-size: 14px;
     text-align: left;
+    border: 2px solid transparent;
 }
 
 .filter-dropdown {
@@ -161,6 +162,7 @@ body {
     text-align: left;
     border-radius: 4px;
     font-size: 14px;
+    border: 2px solid transparent;
     box-sizing: border-box;
 }
 
@@ -168,6 +170,7 @@ body {
     background-color: #007bff;
     color: white;
     box-sizing: border-box;
+    border: 2px solid transparent;
 }
 
 .reset-filter-btn {
@@ -235,7 +238,9 @@ body {
     font-size: 16px;
     white-space: nowrap;
     text-align: center;
+    border: 2px solid transparent;
     box-sizing: border-box;
+    width: 100%;
 }
 
 .sort-btn.active {
