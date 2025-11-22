@@ -391,3 +391,24 @@ body {
     background: #dc3545;
     color: white;
 }
+
+/* отключение эффектов при нажатии тк фильтры меняют размер*/
+.sort-btn:active,
+.filter-btn:active,
+.reset-filter-btn:active,
+#filterToggleBtn:active {
+    transform: none !important;
+    border: 2px solid transparent !important;
+    background-color: #0056b3 !important;
+    padding: 12px 20px !important; /* Фиксированный padding */
+    margin: 0 !important; /* Убираем возможные margin */
+    box-shadow: none !important;
+}
+
+.sort-btn:focus,
+.filter-btn:focus,
+.reset-filter-btn:focus,
+#filterToggleBtn:focus {
+    outline: none !important;
+    border: 2px solid transparent !important;
+}
