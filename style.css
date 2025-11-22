@@ -202,12 +202,12 @@ body {
     }
 }
 
-/* Испр. стили  */
+/* старые стили */
 .sort-btn {
     padding: 12px 20px;
     background: #007bff;
     color: white;
-    border: 2px solid transparent;
+    border: none;
     border-radius: 6px;
     cursor: pointer;
     font-size: 16px;
@@ -215,60 +215,13 @@ body {
     text-align: center;
     box-sizing: border-box;
     width: 100%;
-    /* тут тоже фиксируем размеры*/
-    min-height: 48px;
-    height: auto;
-    transition: background-color 0.2s ease;
 }
 
 .sort-btn.active {
     background-color: #0056b3;
 }
 
-/* Cохраняем размеры кнопки*/
-.sort-btn:active {
-    background-color: #0056b3;
-    padding: 12px 20px;
-    border: 2px solid transparent;
-    transform: none;
-    margin: 0;
-    box-shadow: none;
-}
 
-.sort-btn:focus {
-    outline: none;
-    border: 2px solid transparent;
-}
-
-/* Работает над фильтрами */
-#filterToggleBtn {
-    padding: 12px 20px;
-    background: #007bff;
-    color: white;
-    border: 2px solid transparent;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    white-space: nowrap;
-    text-align: center;
-    box-sizing: border-box;
-    width: 100%;
-    min-height: 48px;
-    height: auto;
-}
-
-#filterToggleBtn:active {
-    background-color: #0056b3;
-    /* Гарантируем неизменность размеров */
-    padding: 12px 20px;
-    border: 2px solid transparent;
-    transform: none;
-}
-
-#filterToggleBtn:focus {
-    outline: none;
-    border: 2px solid transparent;
-}
 
 /* контейнер с задачами */
 .tasks-container {
