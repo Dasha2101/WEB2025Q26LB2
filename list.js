@@ -48,7 +48,7 @@ class ToDo {
         document.body.appendChild(container);
 
         const header = document.createElement('h1');
-        header.textContent = 'ToDo List';
+        header.textContent = 'Список дел';
         container.appendChild(header);
 
         //поиск по названию
@@ -61,11 +61,6 @@ class ToDo {
         searchInput.placeholder = 'Поиск задачи';
         searchInput.className = 'search-input';
 
-        const clearSearchBtn = document.createElement('button');
-        clearSearchBtn.id = 'clearSearchBtn';
-        clearSearchBtn.textContent = '×';
-        clearSearchBtn.className = 'clear-search-btn';
-        clearSearchBtn.style.display = 'none';//пока прячем
 
         searchGroup.appendChild(searchInput);
         searchGroup.appendChild(clearSearchBtn);
