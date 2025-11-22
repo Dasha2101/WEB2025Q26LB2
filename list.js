@@ -696,6 +696,7 @@ class ToDo {
 
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'Удалить';
+            deleteButton.className = 'delete-btn';
             deleteButton.addEventListener('click', () => {
                 this.deleteTask(task.id);
             });
