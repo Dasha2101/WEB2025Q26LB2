@@ -41,7 +41,6 @@ class ToDo {
         }
     }
 
-
     createStructure() {
         const container = document.createElement('div');
         container.className = 'todo-container'; 
@@ -61,16 +60,8 @@ class ToDo {
         searchInput.placeholder = 'Поиск задачи';
         searchInput.className = 'search-input';
 
-        const clearSearchBtn = document.createElement('button');
-        clearSearchBtn.id = 'clearSearchBtn';
-        clearSearchBtn.textContent = '×';
-        clearSearchBtn.className = 'clear-search-btn';
-        clearSearchBtn.style.display = 'none';//пока прячем
-
         searchGroup.appendChild(searchInput);
-        searchGroup.appendChild(clearSearchBtn);
         container.appendChild(searchGroup);
-
 
         //тут первичные элементы - добавляем новую задачу
         const inputGroup = document.createElement('div');
@@ -90,19 +81,17 @@ class ToDo {
         inputGroup.appendChild(addButton);
         container.appendChild(inputGroup);
 
+        //панель управления задачи
+        const controlPanel = document.createElement('div');
+        controlPanel.className = 'control-panel';
 
-    //панель управления задачи
-    const controlPanel = document.createElement('div');
-    controlPanel.className = 'control-panel';
-
-        
         //список фильтров
         const filterToggleBtn = document.createElement('button');
         filterToggleBtn.id = 'filterToggleBtn';
         filterToggleBtn.textContent = 'Фильтры';
         filterToggleBtn.className = 'sort-btn';
         controlPanel.appendChild(filterToggleBtn);//
-        
+
         const filterDropdown = document.createElement('div');
         filterDropdown.id = 'filterDropdown';
         filterDropdown.className = 'filter-dropdown';
@@ -162,7 +151,7 @@ class ToDo {
         sortGroup.appendChild(sortByStatusBtn);
         sortGroup.appendChild(resetSortBtn);
         controlPanel.appendChild(sortGroup);//
-    
+
         container.appendChild(controlPanel);//
 
         const tasksContainer = document.createElement('div');
@@ -186,13 +175,10 @@ class ToDo {
                 this.addTask();
             }
         });
+        
         //обработчики для поиска
         document.getElementById('searchInput').addEventListener('input', (e) => {
             this.searchTasks(e.target.value);
-        });
-
-        document.getElementById('clearSearchBtn').addEventListener('click', () => {
-            this.clearSearch();
         });
         
         //обработчики для сортировки
@@ -209,7 +195,6 @@ class ToDo {
         });
 
         //обработчики для фильтрации
-
         document.getElementById('filterToggleBtn').addEventListener('click', () => {
             this.toggleFilterDropdown();
         });
@@ -294,31 +279,10 @@ class ToDo {
         this.tasks = newOrder;
     }
 
-
-
     //методы для поиска
     searchTasks(query) {
         this.searchQuery = query.toLowerCase().trim();
         this.renderTasks();
-        this.updateSearch();
-    }
-
-    clearSearch() {
-        this.searchQuery = '';
-        document.getElementById('searchInput').value = '';
-        this.renderTasks();
-        this.updateSearch();
-    }
-
-    updateSearch() {
-        const searchInput = document.getElementById('searchInput');
-        const clearSearchBtn = document.getElementById('clearSearchBtn');
-        
-        if (this.searchQuery) {
-            clearSearchBtn.style.display = 'block';
-        } else {
-            clearSearchBtn.style.display = 'none';
-        }
     }
 
     // Получение задач с учетом поиска
@@ -339,13 +303,10 @@ class ToDo {
         
         if (dropdown.style.display === 'block') {
             dropdown.style.display = 'none';
-            
         } else {
             dropdown.style.display = 'block';
-            
         }
     }
-
 
     filterTasks(filterType) {
         this.filterBy = filterType;
@@ -420,7 +381,6 @@ class ToDo {
         }
     }
 
-
     sortTasksByDate() {
         this.sortBy = 'date';
         this.renderTasks();
@@ -465,7 +425,6 @@ class ToDo {
         }
     }
 
-
     // новая задача
     addTask() {
         const taskInput = document.getElementById('taskInput');
@@ -499,13 +458,13 @@ class ToDo {
     }
 
     TaskCompletion(id) {
-            const taskIndex = this.tasks.findIndex(task => task.id === id);
-            if (taskIndex !== -1) {
-                this.tasks[taskIndex].completed = !this.tasks[taskIndex].completed;
-                this.saveTasksToStorage();
-                this.renderTasks();
-            }
+        const taskIndex = this.tasks.findIndex(task => task.id === id);
+        if (taskIndex !== -1) {
+            this.tasks[taskIndex].completed = !this.tasks[taskIndex].completed;
+            this.saveTasksToStorage();
+            this.renderTasks();
         }
+    }
 
     startEditing(taskId) {
         const taskItem = document.querySelector(`.task-item[data-id="${taskId}"]`);
@@ -686,7 +645,6 @@ class ToDo {
                 this.TaskCompletion(task.id);
             });
 
-
             const editButton = document.createElement('button');
             editButton.className = 'edit-btn';
             editButton.textContent = 'Редактировать';
@@ -715,12 +673,11 @@ class ToDo {
 
         });
 
-            //это обработчик для контейнера, где хранится список
-            taskList.addEventListener('dragover', (e) => this.handleDragOver(e));
+        //это обработчик для контейнера, где хранится список
+        taskList.addEventListener('dragover', (e) => this.handleDragOver(e));
 
-            this.updateFilterButtons();
-            this.updateSortButtons();
-            this.updateSearch();
+        this.updateFilterButtons();
+        this.updateSortButtons();
     }
 }
 
