@@ -38,9 +38,6 @@ body {
     }
 }
 
-
-
-
 /* Группа ввода задачи */
 .input-group {
     display: flex;
@@ -67,7 +64,6 @@ body {
     white-space: nowrap;
 }
 
-
 /* Адаптивность для мобильного телефона */
 @media (max-width: 480px) {
     .input-group {
@@ -78,8 +74,6 @@ body {
         width: 100%;
     }
 }
-
-
 
 /* Панель управления */
 .control-panel {
@@ -96,9 +90,7 @@ body {
     }
 }
 
-
-
-/* Пока старое отмечание завершенных задач */
+/* Стили для задач */
 .task-completed {
     border-color: #4CAF50;
     background-color: #f8fff8;
@@ -127,17 +119,6 @@ body {
 }
 
 /* Все для фильтров */
-.filter-toggle-btn {
-    padding: 10px 15px;
-    border: 1px solid #ccc;
-    background: white;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    text-align: left;
-    border: 2px solid transparent;
-}
-
 .filter-dropdown {
     display: none;
     background: white;
@@ -162,15 +143,12 @@ body {
     text-align: left;
     border-radius: 4px;
     font-size: 14px;
-    border: 2px solid transparent;
     box-sizing: border-box;
 }
 
 .filter-btn.active {
     background-color: #007bff;
     color: white;
-    box-sizing: border-box;
-    border: 2px solid transparent;
 }
 
 .reset-filter-btn {
@@ -206,14 +184,10 @@ body {
     font-size: 16px;
 }
 
-
 .search-input:focus {
     outline: none;
     border-color: #007bff;
 }
-
-
-
 
 /* Все для сортировки */
 .sort-group {
@@ -228,27 +202,75 @@ body {
     }
 }
 
+/* Испр. стили  */
 .sort-btn {
     padding: 12px 20px;
     background: #007bff;
     color: white;
-    border: none;
+    border: 2px solid transparent;
     border-radius: 6px;
     cursor: pointer;
     font-size: 16px;
     white-space: nowrap;
     text-align: center;
-    border: 2px solid transparent;
     box-sizing: border-box;
     width: 100%;
+    /* тут тоже фиксируем размеры*/
+    min-height: 48px;
+    height: auto;
+    transition: background-color 0.2s ease;
 }
 
 .sort-btn.active {
     background-color: #0056b3;
 }
 
+/* Cохраняем размеры кнопки*/
+.sort-btn:active {
+    background-color: #0056b3;
+    padding: 12px 20px;
+    border: 2px solid transparent;
+    transform: none;
+    margin: 0;
+    box-shadow: none;
+}
 
-/* Контейнер с задачами */
+.sort-btn:focus {
+    outline: none;
+    border: 2px solid transparent;
+}
+
+/* Работает над фильтрами */
+#filterToggleBtn {
+    padding: 12px 20px;
+    background: #007bff;
+    color: white;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    white-space: nowrap;
+    text-align: center;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 48px;
+    height: auto;
+}
+
+#filterToggleBtn:active {
+    background-color: #0056b3;
+    /* Гарантируем неизменность размеров */
+    padding: 12px 20px;
+    border: 2px solid transparent;
+    transform: none;
+}
+
+#filterToggleBtn:focus {
+    outline: none;
+    border: 2px solid transparent;
+}
+
+/* контейнер с задачами */
 .tasks-container {
     margin-top: 20px;
 }
@@ -286,7 +308,7 @@ body {
     background-color: #f8fff8;
 }
 
-/* Контент задачи */
+/* контент задачи */
 .task-content {
     display: flex;
     flex-direction: column;
@@ -315,7 +337,7 @@ body {
     color: #4CAF50;
 }
 
-/* Редактирование */
+/* редактирование */
 .edit-form {
     display: none;
     flex-direction: column;
@@ -345,7 +367,7 @@ body {
     font-size: 12px;
 }
 
-/* Кнопки действий с задачей */
+/* кнопки действий с задачей */
 .action-buttons {
     display: flex;
     gap: 6px;
@@ -390,48 +412,4 @@ body {
 .delete-btn {
     background: #dc3545;
     color: white;
-}
-
-/* отключение эффектов при нажатии тк фильтры меняют размер*/
-.sort-btn:active,
-.filter-btn:active,
-.reset-filter-btn:active,
-#filterToggleBtn:active {
-    transform: none !important;
-    border: 2px solid transparent !important;
-    background-color: #0056b3 !important;
-    padding: 12px 20px !important; /* Фиксированный padding */
-    margin: 0 !important; /* Убираем возможные margin */
-    box-shadow: none !important;
-}
-
-.sort-btn:focus,
-.filter-btn:focus,
-.reset-filter-btn:focus,
-#filterToggleBtn:focus {
-    outline: none !important;
-    border: 2px solid transparent !important;
-}
-
-/* фиксим фильтры */
-#filterToggleBtn {
-    box-sizing: border-box !important;
-    border: 2px solid transparent !important;
-    width: 100% !important;
-    position: relative !important;
-}
-
-#filterToggleBtn:active {
-    transform: translateY(1px) !important; /* только смещение, не размер */
-    border: 2px solid transparent !important; /* такая же граница */
-    background-color: #0056b3 !important;
-    padding: 12px 20px !important; /* фиксированный padding */
-    margin: 0 !important;
-    box-shadow: none !important;
-    outline: none !important;
-}
-
-#filterToggleBtn:focus {
-    outline: none !important;
-    border: 2px solid transparent !important;
 }
