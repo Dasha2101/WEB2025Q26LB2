@@ -412,3 +412,26 @@ body {
     outline: none !important;
     border: 2px solid transparent !important;
 }
+
+/* фиксим фильтры */
+#filterToggleBtn {
+    box-sizing: border-box !important;
+    border: 2px solid transparent !important;
+    width: 100% !important;
+    position: relative !important;
+}
+
+#filterToggleBtn:active {
+    transform: translateY(1px) !important; /* только смещение, не размер */
+    border: 2px solid transparent !important; /* такая же граница */
+    background-color: #0056b3 !important;
+    padding: 12px 20px !important; /* фиксированный padding */
+    margin: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+#filterToggleBtn:focus {
+    outline: none !important;
+    border: 2px solid transparent !important;
+}
