@@ -89,7 +89,7 @@ class ToDo {
         const filterToggleBtn = document.createElement('button');
         filterToggleBtn.id = 'filterToggleBtn';
         filterToggleBtn.textContent = 'Фильтры';
-        filterToggleBtn.className = 'sort-btn';
+        filterToggleBtn.className = 'filter_btn';
         controlPanel.appendChild(filterToggleBtn);//
 
         const filterDropdown = document.createElement('div');
