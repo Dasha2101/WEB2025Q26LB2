@@ -146,10 +146,7 @@ body {
     box-sizing: border-box;
 }
 
-.filter-btn.active {
-    background-color: #007bff;
-    color: white;
-}
+
 
 .reset-filter-btn {
     margin-top: 10px;
