@@ -48,7 +48,7 @@ class ToDo {
         document.body.appendChild(container);
 
         const header = document.createElement('h1');
-        header.textContent = 'ToDo List';
+        header.textContent = 'Список дел';
         container.appendChild(header);
 
         //поиск по названию
@@ -100,7 +100,7 @@ class ToDo {
         const filterToggleBtn = document.createElement('button');
         filterToggleBtn.id = 'filterToggleBtn';
         filterToggleBtn.textContent = 'Фильтры';
-        filterToggleBtn.className = 'sort-btn';
+        filterToggleBtn.className = 'filter-btn;
         controlPanel.appendChild(filterToggleBtn);//
         
         const filterDropdown = document.createElement('div');

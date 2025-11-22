@@ -68,7 +68,7 @@ body {
 }
 
 
-//адапотивность для мобильного телефона
+//адаптивность для мобильного телефона
 @media (max-width: 480px) {
     .input-group {
         flex-direction: column;
