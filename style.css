@@ -224,19 +224,19 @@ body {
 }
 
 .sort-btn {
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    background: white;
+    padding: 12px 20px;
+    background: #007bff;
+    color: white;
+    border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 14px;
-    text-align: center;
+    font-size: 16px;
     white-space: nowrap;
+    text-align: center
 }
 
 .sort-btn.active {
-    background-color: #007bff;
-    color: white;
+    background-color: #0056b3;
 }
 
 
