@@ -65,6 +65,7 @@ class ToDo {
         clearSearchBtn.id = 'clearSearchBtn';
         clearSearchBtn.textContent = '×';
         clearSearchBtn.className = 'clear-search-btn';
+        clearSearchBtn.style.display = 'none';//пока прячем
 
         searchGroup.appendChild(searchInput);
         searchGroup.appendChild(clearSearchBtn);
