@@ -119,13 +119,23 @@ body {
 }
 
 /* Все для фильтров */
+.filter-container {
+    position: relative;
+    width: 100%;
+}
+
 .filter-dropdown {
-    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
     background: white;
     border: 1px solid #ccc;
+    border-radius: 6px;
     padding: 15px;
-    margin-top: 5px 0;
-    box-sizing: border-box;
+    margin-top: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .filter-title {

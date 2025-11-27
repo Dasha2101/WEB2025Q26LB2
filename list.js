@@ -86,16 +86,26 @@ class ToDo {
         controlPanel.className = 'control-panel';
 
         //список фильтров
+        const filterContainer = document.createElement('div');
+        filterContainer.className = 'filter-container';
+        filterContainer.style.position = 'relative';
+
         const filterToggleBtn = document.createElement('button');
         filterToggleBtn.id = 'filterToggleBtn';
         filterToggleBtn.textContent = 'Фильтры';
         filterToggleBtn.className = 'sort-btn';
-        controlPanel.appendChild(filterToggleBtn);//
+        filterContainer.appendChild(filterToggleBtn);
 
         const filterDropdown = document.createElement('div');
         filterDropdown.id = 'filterDropdown';
         filterDropdown.className = 'filter-dropdown';
         filterDropdown.style.display = 'none';
+
+        filterDropdown.style.position = 'absolute';
+        filterDropdown.style.top = '100%';
+        filterDropdown.style.left = '0';
+        filterDropdown.style.zIndex = '1000';
+        filterDropdown.style.width = '100%';
 
         const filterTitle = document.createElement('div');
         filterTitle.className = 'filter-title';
@@ -126,7 +136,9 @@ class ToDo {
         filterDropdown.appendChild(filterActiveBtn);
         filterDropdown.appendChild(filterCompletedBtn);
         filterDropdown.appendChild(resetFilterBtn);
-        controlPanel.appendChild(filterDropdown);//
+        filterContainer.appendChild(filterDropdown);
+
+        controlPanel.appendChild(filterContainer);
 
         //кнопки сортировки
         const sortGroup = document.createElement('div');
