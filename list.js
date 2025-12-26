@@ -442,10 +442,7 @@ class ToDo {
         const taskInput = document.getElementById('taskInput');
         const title = taskInput.value.trim();
 
-        if (title === '') {
-            alert('Пустое название задачи');
-            return;
-        }
+        
 
         const newTask = {
             id: Date.now(),
@@ -503,11 +500,7 @@ class ToDo {
         const newTitle = editTitleInput.value.trim();
         const newDate = editDateInput.value;
 
-        if (newTitle === '') {
-            alert('Пустое название задачи');
-            return;
-        }
-
+        
         const taskIndex = this.tasks.findIndex(task => task.id === taskId);
         if (taskIndex !== -1) {
             this.tasks[taskIndex].title = newTitle;
