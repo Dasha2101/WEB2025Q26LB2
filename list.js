@@ -515,8 +515,11 @@ class ToDo {
     // отображение всех задач
     renderTasks() {
         const taskList = document.getElementById('taskList');
-        taskList.innerHTML = '';
-
+        
+        //не inner html а удаляем только dom элементы
+        while (taskList.firstChild) {
+        taskList.removeChild(taskList.firstChild);
+    }
         let tasksToRender = this.getFilteredTasks();
         //применить поиск сюда
         tasksToRender = this.getSearchedTasks(tasksToRender);
