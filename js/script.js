@@ -19,7 +19,6 @@ panel.setAttribute('aria-label', 'Список');
 
 const taskForm = document.createElement('form');
 taskForm.className = 'task-form';
-taskForm.addEventListener('submit', (event) => event.preventDefault());
 
 function createField(labelText, input, id) {
     const field = document.createElement('div');
@@ -90,11 +89,137 @@ toolbar.append(searchInput, statusSelect, sortSelect);
 const taskList = document.createElement('ul');
 taskList.className = 'task-list';
 taskList.setAttribute('aria-live', 'polite');
-const emptyState = document.createElement('li');
-emptyState.className = 'empty-state';
-emptyState.textContent = 'Пока задач нет. Добавьте первую задачу.';
-taskList.append(emptyState);
+
+let tasks = [];
+let editingTaskId = null;
+
+function createActionButton(text, className, onClick) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = className;
+    button.textContent = text;
+    button.addEventListener('click', onClick);
+    return button;
+}
+
+function renderTasks() {
+    taskList.replaceChildren();
+
+    if (tasks.length === 0) {
+        const emptyState = document.createElement('li');
+        emptyState.className = 'empty-state';
+        emptyState.textContent = 'Пока задач нет. Добавьте первую задачу.';
+        taskList.append(emptyState);
+        return;
+    }
+
+    tasks.forEach((task) => {
+        const item = document.createElement('li');
+        item.className = 'task-item';
+        if (task.completed) item.classList.add('task-item-completed');
+
+        const content = document.createElement('div');
+        content.className = 'task-content';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = task.completed;
+        checkbox.setAttribute('aria-label', 'Отметить задачу выполненной');
+        checkbox.addEventListener('change', () => {
+            task.completed = checkbox.checked;
+            renderTasks();
+        });
+        content.append(checkbox);
+
+        if (editingTaskId === task.id) {
+            const editFields = document.createElement('div');
+            editFields.className = 'task-edit-fields';
+            const titleInput = document.createElement('input');
+            titleInput.className = 'text-input';
+            titleInput.type = 'text';
+            titleInput.value = task.title;
+            titleInput.setAttribute('aria-label', 'Название задачи');
+            titleInput.required = true;
+            const dateInput = document.createElement('input');
+            dateInput.className = 'text-input';
+            dateInput.type = 'date';
+            dateInput.value = task.date;
+            dateInput.setAttribute('aria-label', 'Дата задачи');
+            editFields.append(titleInput, dateInput);
+            content.append(editFields);
+
+            const actions = document.createElement('div');
+            actions.className = 'task-actions';
+            actions.append(
+                createActionButton('Сохранить', 'small-button', () => {
+                    const newTitle = titleInput.value.trim();
+                    if (!newTitle) {
+                        titleInput.focus();
+                        return;
+                    }
+                    task.title = newTitle;
+                    task.date = dateInput.value;
+                    editingTaskId = null;
+                    renderTasks();
+                }),
+                createActionButton('Отмена', 'small-button secondary-button', () => {
+                    editingTaskId = null;
+                    renderTasks();
+                })
+            );
+            item.append(content, actions);
+            taskList.append(item);
+            return;
+        }
+
+        const details = document.createElement('div');
+        details.className = 'task-details';
+        const taskName = document.createElement('span');
+        taskName.className = 'task-name';
+        taskName.textContent = task.title;
+        details.append(taskName);
+        if (task.date) {
+            const taskDate = document.createElement('time');
+            taskDate.className = 'task-date-label';
+            taskDate.dateTime = task.date;
+            taskDate.textContent = task.date;
+            details.append(taskDate);
+        }
+        content.append(details);
+
+        const actions = document.createElement('div');
+        actions.className = 'task-actions';
+        actions.append(
+            createActionButton('Изменить', 'small-button', () => {
+                editingTaskId = task.id;
+                renderTasks();
+            }),
+            createActionButton('Удалить', 'small-button delete-button', () => {
+                tasks = tasks.filter((itemTask) => itemTask.id !== task.id);
+                renderTasks();
+            })
+        );
+        item.append(content, actions);
+        taskList.append(item);
+    });
+}
+
+taskForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const taskName = taskTitleInput.value.trim();
+    if (!taskName) return;
+
+    tasks.push({
+        id: Date.now(),
+        title: taskName,
+        date: taskDateInput.value,
+        completed: false
+    });
+    taskForm.reset();
+    renderTasks();
+    taskTitleInput.focus();
+});
 
 panel.append(taskForm, toolbar, taskList);
 page.append(header, panel);
 document.body.append(page);
+renderTasks();
