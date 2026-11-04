@@ -105,15 +105,34 @@ function createActionButton(text, className, onClick) {
 function renderTasks() {
     taskList.replaceChildren();
 
-    if (tasks.length === 0) {
+    const searchText = searchInput.value.trim().toLocaleLowerCase();
+    const visibleTasks = tasks.filter((task) => {
+        const matchesName = task.title.toLocaleLowerCase().includes(searchText);
+        const matchesStatus = statusSelect.value === 'all'
+            || (statusSelect.value === 'completed' && task.completed)
+            || (statusSelect.value === 'active' && !task.completed);
+        return matchesName && matchesStatus;
+    });
+
+    visibleTasks.sort((firstTask, secondTask) => {
+        if (!firstTask.date && !secondTask.date) return 0;
+        if (!firstTask.date) return 1;
+        if (!secondTask.date) return -1;
+        const result = firstTask.date.localeCompare(secondTask.date);
+        return sortSelect.value === 'date-desc' ? -result : result;
+    });
+
+    if (visibleTasks.length === 0) {
         const emptyState = document.createElement('li');
         emptyState.className = 'empty-state';
-        emptyState.textContent = 'Пока задач нет. Добавьте первую задачу.';
+        emptyState.textContent = tasks.length === 0
+            ? 'Пока задач нет. Добавьте первую задачу.'
+            : 'По этим условиям задачи не найдены.';
         taskList.append(emptyState);
         return;
     }
 
-    tasks.forEach((task) => {
+    visibleTasks.forEach((task) => {
         const item = document.createElement('li');
         item.className = 'task-item';
         if (task.completed) item.classList.add('task-item-completed');
@@ -218,6 +237,10 @@ taskForm.addEventListener('submit', (event) => {
     renderTasks();
     taskTitleInput.focus();
 });
+
+searchInput.addEventListener('input', renderTasks);
+statusSelect.addEventListener('change', renderTasks);
+sortSelect.addEventListener('change', renderTasks);
 
 panel.append(taskForm, toolbar, taskList);
 page.append(header, panel);
