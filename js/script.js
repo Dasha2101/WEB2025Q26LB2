@@ -81,6 +81,7 @@ const statusSelect = createSelect('Фильтр по статусу', [
     ['completed', 'Выполненные']
 ]);
 const sortSelect = createSelect('Сортировка задач', [
+    ['manual', 'Вручную'],
     ['date-asc', 'Сначала ближайшие'],
     ['date-desc', 'Сначала поздние']
 ]);
@@ -90,8 +91,31 @@ const taskList = document.createElement('ul');
 taskList.className = 'task-list';
 taskList.setAttribute('aria-live', 'polite');
 
+const storageKey = 'todoTasks';
 let tasks = [];
 let editingTaskId = null;
+
+try {
+    const savedTasks = JSON.parse(localStorage.getItem(storageKey));
+    if (Array.isArray(savedTasks)) {
+        tasks = savedTasks.filter((task) =>
+            task
+            && typeof task.id === 'number'
+            && typeof task.title === 'string'
+            && typeof task.date === 'string'
+            && typeof task.completed === 'boolean'
+        );
+    }
+} catch (error) {
+    tasks = [];
+}
+
+function saveTasks() {
+    try {
+        localStorage.setItem(storageKey, JSON.stringify(tasks));
+    } catch (error) {
+    }
+}
 
 function createActionButton(text, className, onClick) {
     const button = document.createElement('button');
@@ -115,6 +139,7 @@ function renderTasks() {
     });
 
     visibleTasks.sort((firstTask, secondTask) => {
+        if (sortSelect.value === 'manual') return 0;
         if (!firstTask.date && !secondTask.date) return 0;
         if (!firstTask.date) return 1;
         if (!secondTask.date) return -1;
@@ -135,6 +160,36 @@ function renderTasks() {
     visibleTasks.forEach((task) => {
         const item = document.createElement('li');
         item.className = 'task-item';
+        item.draggable = sortSelect.value === 'manual';
+        item.addEventListener('dragstart', (event) => {
+            event.dataTransfer.effectAllowed = 'move';
+            event.dataTransfer.setData('text/plain', String(task.id));
+            item.classList.add('task-item-dragging');
+        });
+        item.addEventListener('dragend', () => {
+            item.classList.remove('task-item-dragging');
+        });
+        item.addEventListener('dragover', (event) => event.preventDefault());
+        item.addEventListener('drop', (event) => {
+            event.preventDefault();
+            const sourceId = Number(event.dataTransfer.getData('text/plain'));
+            if (!sourceId || sourceId === task.id) return;
+
+            const shownTasks = tasks.filter((shownTask) => visibleTasks.some((visibleTask) => visibleTask.id === shownTask.id));
+            const sourceIndex = shownTasks.findIndex((shownTask) => shownTask.id === sourceId);
+            const targetIndex = shownTasks.findIndex((shownTask) => shownTask.id === task.id);
+            if (sourceIndex === -1 || targetIndex === -1) return;
+            const [movedTask] = shownTasks.splice(sourceIndex, 1);
+            shownTasks.splice(targetIndex, 0, movedTask);
+
+            let nextIndex = 0;
+            tasks = tasks.map((existingTask) => {
+                if (!visibleTasks.some((visibleTask) => visibleTask.id === existingTask.id)) return existingTask;
+                return shownTasks[nextIndex++];
+            });
+            saveTasks();
+            renderTasks();
+        });
         if (task.completed) item.classList.add('task-item-completed');
 
         const content = document.createElement('div');
@@ -145,6 +200,7 @@ function renderTasks() {
         checkbox.setAttribute('aria-label', 'Отметить задачу выполненной');
         checkbox.addEventListener('change', () => {
             task.completed = checkbox.checked;
+            saveTasks();
             renderTasks();
         });
         content.append(checkbox);
@@ -178,6 +234,7 @@ function renderTasks() {
                     task.title = newTitle;
                     task.date = dateInput.value;
                     editingTaskId = null;
+                    saveTasks();
                     renderTasks();
                 }),
                 createActionButton('Отмена', 'small-button secondary-button', () => {
@@ -214,6 +271,7 @@ function renderTasks() {
             }),
             createActionButton('Удалить', 'small-button delete-button', () => {
                 tasks = tasks.filter((itemTask) => itemTask.id !== task.id);
+                saveTasks();
                 renderTasks();
             })
         );
@@ -233,6 +291,7 @@ taskForm.addEventListener('submit', (event) => {
         date: taskDateInput.value,
         completed: false
     });
+    saveTasks();
     taskForm.reset();
     renderTasks();
     taskTitleInput.focus();

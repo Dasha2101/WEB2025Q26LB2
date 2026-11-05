@@ -54,6 +54,8 @@ button { cursor: pointer; }
 .task-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
 .empty-state { padding: 28px 16px; border: 1px dashed #d7d9df; border-radius: 8px; color: #696b73; text-align: center; }
 .task-item { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px; border: 1px solid #e1e3e8; border-radius: 8px; }
+.task-item[draggable='true'] { cursor: grab; }
+.task-item-dragging { opacity: 0.5; }
 .task-content { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .task-content input[type='checkbox'] { width: 18px; height: 18px; flex: 0 0 auto; accent-color: #5268c9; }
 .task-details { display: grid; gap: 5px; min-width: 0; }
